@@ -1,0 +1,38 @@
+{
+    "name": "workhouse-advertising/omnipay-mpgs",
+    "description": "Mastercard Payment Gateway Service (MPGS) gateway for Omnipay payment processing library",
+    "keywords": [
+        "omnipay",
+        "mpgs",
+        "gateway",
+        "merchant"
+    ],
+    "homepage": "https://github.com/workhouse-advertising/omnipay-mpgs",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Geoghegan",
+            "email": "simon@workhouseadvertising.com.au"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\Mpgs\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnipay\\Mpgs\\Test\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^7.2|^8.0",
+        "omnipay/common": "^3.1"
+    },
+    "require-dev": {
+        "omnipay/tests": "^3|^4"
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
