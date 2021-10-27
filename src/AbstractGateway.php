@@ -17,32 +17,12 @@ abstract class AbstractGateway extends AbstractGatewayBase
         return array(
             // TODO: Consider adding verification for available API regions.
             'apiRegion' => 'ap',
-            'apiVersion' => 62,
+            'apiVersion' => 61,
             'merchantId' => '',
             'password' => '',
             'testMode' => false,
+            // TODO: Add support for the 'debug' parameter.
+            'debug' => false,
         );
     }
-
-    // /**
-    //  * Authorize and immediately capture an amount on the customers card
-    //  *
-    //  * @param array $options
-    //  * @return \Omnipay\Common\Message\ResponseInterface
-    //  */
-    // public function purchase(array $options = [])
-    // {
-    //     return $this->createRequest(\Omnipay\Mpgs\Message\PurchaseRequest::class, $options);
-    // }
-
-    // /**
-    //  * Handle return from off-site gateways after purchase
-    //  *
-    //  * @param array $options
-    //  * @return \Omnipay\Common\Message\ResponseInterface
-    //  */
-    // public function completePurchase(array $options = [])
-    // {
-    //     return $this->createRequest(\Omnipay\Mpgs\Message\CompletePurchaseRequest::class, $options);
-    // }
 }

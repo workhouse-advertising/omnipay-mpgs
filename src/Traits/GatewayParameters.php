@@ -5,7 +5,7 @@ namespace Omnipay\Mpgs\Traits;
 trait GatewayParameters
 {
     // protected $liveEndpoint = 'https://ap-gateway.mastercard.com';
-    // protected $testEndpoint = 'https://secure.uat.tnspayments.com';
+    // protected $testEndpoint = 'https://test-gateway.mastercard.com';
 
     /**
      * @return string
@@ -13,6 +13,7 @@ trait GatewayParameters
     public function getBaseAssetUrl()
     {
         return $this->getLiveBaseEndpoint();
+        // return $this->getBaseEndpoint();
     }
 
     /**
@@ -37,7 +38,8 @@ trait GatewayParameters
     public function getTestBaseEndpoint()
     {
         // return $this->testEndpoint;
-        return 'https://secure.uat.tnspayments.com';
+        // return 'https://secure.uat.tnspayments.com';
+        return 'https://test-gateway.mastercard.com';
     }
 
     /**
@@ -60,18 +62,18 @@ trait GatewayParameters
     /**
      * @return mixed
      */
-    public function getMerchantSecret()
+    public function getPassword()
     {
-        return $this->getParameter('merchantSecret');
+        return $this->getParameter('password');
     }
 
     /**
      * @param mixed $value
      * @return $this
      */
-    public function setMerchantSecret($value)
+    public function setPassword($value)
     {
-        return $this->setParameter('merchantSecret', $value);
+        return $this->setParameter('password', $value);
     }
 
     /**
@@ -106,5 +108,39 @@ trait GatewayParameters
     public function setApiRegion($value)
     {
         return $this->setParameter('apiRegion', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSessionId()
+    {
+        return $this->getParameter('sessionId');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setSessionId($value)
+    {
+        return $this->setParameter('sessionId', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderId()
+    {
+        return $this->getParameter('orderId');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setOrderId($value)
+    {
+        return $this->setParameter('orderId', $value);
     }
 }
