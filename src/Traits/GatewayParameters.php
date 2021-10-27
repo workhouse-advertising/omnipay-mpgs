@@ -4,16 +4,12 @@ namespace Omnipay\Mpgs\Traits;
 
 trait GatewayParameters
 {
-    // protected $liveEndpoint = 'https://ap-gateway.mastercard.com';
-    // protected $testEndpoint = 'https://test-gateway.mastercard.com';
-
     /**
      * @return string
      */
     public function getBaseAssetUrl()
     {
-        return $this->getLiveBaseEndpoint();
-        // return $this->getBaseEndpoint();
+        return $this->getBaseEndpoint();
     }
 
     /**
@@ -37,8 +33,8 @@ trait GatewayParameters
      */
     public function getTestBaseEndpoint()
     {
-        // return $this->testEndpoint;
-        // return 'https://secure.uat.tnspayments.com';
+        // TODO: Confirm that this is actually a valid test endpoint, it seems that white-labeled instances
+        //       may use a different mechanism for testing.
         return 'https://test-gateway.mastercard.com';
     }
 
