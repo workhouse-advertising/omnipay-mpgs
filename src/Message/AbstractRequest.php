@@ -10,7 +10,4 @@ use Omnipay\Mpgs\Traits\GatewayParameters;
 abstract class AbstractRequest extends BaseAbstractRequest
 {
     use GatewayParameters;
-
-    protected $liveEndpoint = 'https://ap-gateway.mastercard.com';
-    protected $testEndpoint = 'https://secure.uat.tnspayments.com';
 }

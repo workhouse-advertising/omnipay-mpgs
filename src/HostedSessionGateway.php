@@ -2,26 +2,24 @@
 
 namespace Omnipay\Mpgs;
 
-use Omnipay\Common\AbstractGateway as AbstractGatewayBase;
-use Omnipay\Mpgs\Traits\GatewayParameters;
+use Omnipay\Mpgs\AbstractGateway;
 
-abstract class AbstractGateway extends AbstractGatewayBase
+class HostedSessionGateway extends AbstractGateway
 {
-    use GatewayParameters;
+    /**
+     * @inheritDoc
+     */
+    public function getName()
+    {
+        return 'MPGS Hosted Session';
+    }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getDefaultParameters()
+    public function getSessionJsUrl()
     {
-        return array(
-            // TODO: Consider adding verification for available API regions.
-            'apiRegion' => 'ap',
-            'apiVersion' => 62,
-            'merchantId' => '',
-            'password' => '',
-            'testMode' => false,
-        );
+        return sprintf('%s/form/version/%s/merchant/%s/session.js', $this->getBaseAssetUrl(), $this->getApiVersion(), $this->getMerchantId());
     }
 
     // /**
