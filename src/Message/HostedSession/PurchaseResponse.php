@@ -26,4 +26,12 @@ class PurchaseResponse extends AbstractResponse
     {
         return $this->getData()['response']['acquirerMessage'] ?? null;
     }
+
+    /**
+     * @return string
+     */
+    public function getTransactionReference()
+    {
+        return $this->getData()['authorizationResponse']['transactionIdentifier'] ?? null;
+    }
 }
