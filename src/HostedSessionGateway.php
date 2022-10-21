@@ -43,4 +43,15 @@ class HostedSessionGateway extends AbstractGateway
     {
         return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\CompletePurchaseRequest::class, $options);
     }
+
+    /**
+     * Initiate the authentication flow.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function initiateAuthentication(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\InitiateAuthenticationRequest::class, $options);
+    }
 }

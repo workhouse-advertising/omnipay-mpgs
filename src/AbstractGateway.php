@@ -17,7 +17,7 @@ abstract class AbstractGateway extends AbstractGatewayBase
         return array(
             // TODO: Consider adding verification for available API regions.
             'apiRegion' => 'ap',
-            'apiVersion' => 61,
+            'apiVersion' => 68,
             'merchantId' => '',
             'password' => '',
             'testMode' => false,
