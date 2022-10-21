@@ -20,7 +20,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
         // NOTE: This just confirms that the _response_ was successful, not a transaction.
         //       There is a bit of overlap and ambiguity with the Omnipay package, but this
         //       point has been clarified and documentation has been updated to confirm.
-        return ($this->getData()['result'] ?? null) === 'SUCCESS';
+        return ($this->getData()['result'] ?? null) === 'SUCCESS' && $this->isRedirect();
     }
 
     /**
@@ -29,7 +29,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
     public function isRedirect()
     {
         // TODO: Consider also checking the gateway code and recommendation.
-        return (bool) $this->getRedirectUrl();
+        return (bool) $this->getRedirectUrl() && $this->getRedirectHtml();
     }
 
     /**
@@ -37,6 +37,9 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
      */
     public function getRedirectUrl()
     {
+        // TODO: All of the required information appears to be missing for 3DS1 tests.
+        //       Possibly the payment gateway is broken? Or maybe it's pure garbage? Both?
+
         $url = null;
         if ($this->is3ds2()) {
             $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2']['methodUrl'] ?? null;
