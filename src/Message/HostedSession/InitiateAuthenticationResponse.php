@@ -58,17 +58,17 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
         return $this->getData()['authentication']['redirect']['html'] ?? null;
     }
 
-    // /**
-    //  * @return HttpRedirectResponse|HttpResponse
-    //  */
-    // public function getRedirectResponse()
-    // {
-    //     // TODO: Either redirection method currently appears to only redirect to an empty page.
-    //     //       Need to confirm if this is the expected behaviour in any way.
-    //     $this->validateRedirect();
-    //     $output = $this->getRedirectHtml();
-    //     return new HttpResponse($this->getRedirectHtml());
-    // }
+    /**
+     * @return HttpRedirectResponse|HttpResponse
+     */
+    public function getRedirectResponse()
+    {
+        // TODO: Either redirection method currently appears to only redirect to an empty page.
+        //       Need to confirm if this is the expected behaviour in any way.
+        $this->validateRedirect();
+        $output = $this->getRedirectHtml();
+        return new HttpResponse($this->getRedirectHtml());
+    }
 
     /**
      * @inheritDoc

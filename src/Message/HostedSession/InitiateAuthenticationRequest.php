@@ -78,7 +78,8 @@ class InitiateAuthenticationRequest extends AbstractRequest
 
         // NOTE: Any 2xx response is to be considered to be successful, although this is not explicitly indicated in the documentation
         //       at `https://test-gateway.mastercard.com/api/documentation/apiDocumentation/rest-json/version/latest/operation/Transaction%3a%20%20Pay.html`
-        if ($httpResponse->getStatusCode() < 200 || $httpResponse->getStatusCode() > 299) {
+        // NOTE: Including 400s as MPGS uses those for some errors even though it's _technically_ a valid response.
+        if (($httpResponse->getStatusCode() < 200 || $httpResponse->getStatusCode() > 299) && $httpResponse->getStatusCode() != 400) {
             throw new InvalidRequestException("Invalid request to the MPGS Hosted Session API. Received status code '{$httpResponse->getStatusCode()}'.");
         }
 
