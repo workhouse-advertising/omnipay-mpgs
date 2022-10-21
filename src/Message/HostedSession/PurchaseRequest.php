@@ -63,8 +63,6 @@ class PurchaseRequest extends AbstractRequest
         $httpResponse = $this->httpClient->request('PUT', $this->getEndpoint(), $headers, json_encode($data));
         $responseData = json_decode($httpResponse->getBody(), true);
 
-
-
         // NOTE: Any 2xx response is to be considered to be successful, although this is not explicitly indicated in the documentation
         //       at `https://test-gateway.mastercard.com/api/documentation/apiDocumentation/rest-json/version/latest/operation/Transaction%3a%20%20Pay.html`
         // NOTE: Including 400s as MPGS uses those for some errors even though it's _technically_ a valid response.
