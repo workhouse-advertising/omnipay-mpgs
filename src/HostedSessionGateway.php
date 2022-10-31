@@ -23,6 +23,17 @@ class HostedSessionGateway extends AbstractGateway
     }
 
     /**
+     * Fetch a session.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function getSession(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\GetSessionRequest::class, $options);
+    }
+
+    /**
      * Authorize and immediately capture an amount on the customers card
      *
      * @param array $options

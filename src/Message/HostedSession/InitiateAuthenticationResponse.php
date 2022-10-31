@@ -20,7 +20,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
         // NOTE: This just confirms that the _response_ was successful, not a transaction.
         //       There is a bit of overlap and ambiguity with the Omnipay package, but this
         //       point has been clarified and documentation has been updated to confirm.
-        return ($this->getData()['result'] ?? null) === 'SUCCESS' && $this->isRedirect();
+        return ($this->getData()['result'] ?? null) === 'SUCCESS';
     }
 
     /**
@@ -29,7 +29,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
     public function isRedirect()
     {
         // TODO: Consider also checking the gateway code and recommendation.
-        return (bool) $this->getRedirectUrl() && $this->getRedirectHtml();
+        return $this->getRedirectUrl() || $this->getRedirectHtml();
     }
 
     /**
@@ -45,7 +45,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
             $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2']['methodUrl'] ?? null;
         } elseif ($this->is3ds1()) {
             // TODO: Test and confirm for 3DS1.
-            $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodUrl'] ?? null;
+            // $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodUrl'] ?? null;
         }
         return $url;
     }
@@ -87,8 +87,8 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
         if ($this->is3ds2()) {
             $methodPostData = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2']['methodPostData'] ?? null;
         } elseif ($this->is3ds1()) {
-            // TODO: Test and confirm for 3DS1.
-            $methodPostData = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodPostData'] ?? null;
+            // // TODO: Test and confirm for 3DS1.
+            // $methodPostData = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodPostData'] ?? null;
         }
         return $methodPostData ? ['threeDSMethodData' => $methodPostData] : [];
     }
@@ -98,7 +98,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
      */
     public function isTransparentRedirect()
     {
-        return true;
+        return false;
     }
 
     /**
