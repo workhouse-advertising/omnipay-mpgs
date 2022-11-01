@@ -24,26 +24,30 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
+     * Get the endpoint to call.
      *
-     *
+     * @return string
      */
     abstract protected function getEndpoint(): string;
 
     /**
+     * Get the method for the endpoint.
      *
-     *
+     * @return string
      */
     abstract protected function getMethod(): string;
 
     /**
+     * Get the FQCN to use for a response.
      *
-     *
+     * @return string
      */
     abstract protected function getResponseClass(): string;
 
     /**
+     * Create a response from the response data.
      *
-     *
+     * @return \Omnipay\Common\Message\AbstractResponse
      */
     protected function makeResponse($responseData): AbstractResponse
     {
@@ -71,8 +75,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
         //       at `https://test-gateway.mastercard.com/api/documentation/apiDocumentation/rest-json/version/latest/operation/Transaction%3a%20%20Pay.html`
         // NOTE: Including 400s as MPGS uses those for some errors even though it's _technically_ a valid response.
         if (($httpResponse->getStatusCode() < 200 || $httpResponse->getStatusCode() > 299) && $httpResponse->getStatusCode() != 400) {
-            // dd($responseData, $httpResponse->getStatusCode());
-
             throw new InvalidRequestException("Invalid request to the MPGS Hosted Session API. Received status code '{$httpResponse->getStatusCode()}'.");
         }
 
