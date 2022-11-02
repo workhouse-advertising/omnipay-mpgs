@@ -29,7 +29,16 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
     public function isRedirect()
     {
         // TODO: Consider also checking the gateway code and recommendation.
-        return $this->getRedirectUrl() || $this->getRedirectHtml();
+        // return $this->getRedirectUrl() || $this->getRedirectHtml();
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isTransparentRedirect()
+    {
+        return true;
     }
 
     /**
@@ -41,12 +50,12 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
         //       Possibly the payment gateway is broken? Or maybe it's pure garbage? Both?
 
         $url = null;
-        if ($this->is3ds2()) {
-            $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2']['methodUrl'] ?? null;
-        } elseif ($this->is3ds1()) {
-            // TODO: Test and confirm for 3DS1.
-            // $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodUrl'] ?? null;
-        }
+        // if ($this->is3ds2()) {
+        //     $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2']['methodUrl'] ?? null;
+        // } elseif ($this->is3ds1()) {
+        //     // TODO: Test and confirm for 3DS1.
+        //     // $url = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodUrl'] ?? null;
+        // }
         return $url;
     }
 
@@ -55,6 +64,7 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
      */
     public function getRedirectHtml()
     {
+        // TODO: Need to handle empty responses.
         return $this->getData()['authentication']['redirect']['html'] ?? null;
     }
 
@@ -91,14 +101,6 @@ class InitiateAuthenticationResponse extends AbstractResponse implements Redirec
             // $methodPostData = $this->getData()['authentication']['redirect']['customizedHtml']['3ds1']['methodPostData'] ?? null;
         }
         return $methodPostData ? ['threeDSMethodData' => $methodPostData] : [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isTransparentRedirect()
-    {
-        return false;
     }
 
     /**
