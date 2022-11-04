@@ -30,29 +30,52 @@ class AuthenticateRequest extends AbstractRequest
             'session' => [
                 'id' => $this->getSessionId(),
             ],
-            // TODO: Add support for these authentication parameters.
             'authentication' => [
                 'redirectResponseUrl' => $this->getReturnUrl(),
             ],
-            // TODO: provide actual device details.
             'device' => [
-                'browser' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
-                'browserDetails' => [
-                    'acceptHeaders' => '*/*',
-                    'javaEnabled' => false,
-                    'language' => 'en-AU',
-                    'screenHeight' => '1080',
-                    'screenWidth' => '1920',
-                    'timeZone' => '-480',
-                    'colorDepth' => '32',
-                    '3DSecureChallengeWindowSize' => 'FULL_SCREEN',
-                ],
+                'browser' => substr($this->getBrowser() ?? '', 0, 255),
+                'browserDetails' => (array) $this->getBrowserDetails(),
             ],
             'order' => [
                 'amount' => $this->getAmount(),
                 'currency' => $this->getCurrency(),
             ],
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowser()
+    {
+        return $this->getParameter('browser');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowser($value)
+    {
+        return $this->setParameter('browser', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowserDetails()
+    {
+        return $this->getParameter('browserDetails');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowserDetails($value)
+    {
+        return $this->setParameter('browserDetails', $value);
     }
 
     /**

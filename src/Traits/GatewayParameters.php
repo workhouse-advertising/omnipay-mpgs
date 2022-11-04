@@ -173,38 +173,4 @@ trait GatewayParameters
     {
         return $this->setParameter('orderId', $value);
     }
-
-    /**
-     * @return mixed
-     */
-    public function getBrowser()
-    {
-        return $this->getParameter('browser');
-    }
-
-    /**
-     * @param mixed $value
-     * @return $this
-     */
-    public function setBrowser($value)
-    {
-        return $this->setParameter('browser', $value);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBrowserDetails()
-    {
-        return $this->getParameter('browserDetails');
-    }
-
-    /**
-     * @param mixed $value
-     * @return $this
-     */
-    public function setBrowserDetails($value)
-    {
-        return $this->setParameter('browserDetails', $value);
-    }
 }

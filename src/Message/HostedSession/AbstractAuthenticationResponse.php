@@ -13,6 +13,18 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 abstract class AbstractAuthenticationResponse extends AbstractResponse implements RedirectResponseInterface
 {
+    public const AUTHENTICATION_ATTEMPTED = 'AUTHENTICATION_ATTEMPTED'; // Payer authentication was attempted and a proof of authentication attempt was obtained.
+    public const AUTHENTICATION_AVAILABLE = 'AUTHENTICATION_AVAILABLE'; // Payer authentication is available for the payment method provided.
+    public const AUTHENTICATION_EXEMPT = 'AUTHENTICATION_EXEMPT'; // Exemption from the Regulatory Technical Standards (RTS) requirements for Strong Customer Authentication (SCA) under the Payment Services Directive 2 (PSD2) regulations in the European Economic Area has been claimed or granted.
+    public const AUTHENTICATION_FAILED = 'AUTHENTICATION_FAILED'; // The payer was not authenticated. You should not proceed with this transaction.
+    public const AUTHENTICATION_NOT_IN_EFFECT = 'AUTHENTICATION_NOT_IN_EFFECT'; // There is no authentication information associated with this transaction.
+    public const AUTHENTICATION_NOT_SUPPORTED = 'AUTHENTICATION_NOT_SUPPORTED'; // The requested authentication method is not supported for this payment method.
+    public const AUTHENTICATION_PENDING = 'AUTHENTICATION_PENDING'; // Payer authentication is pending completion of a challenge process.
+    public const AUTHENTICATION_REJECTED = 'AUTHENTICATION_REJECTED'; // The issuer rejected the authentication request and requested that you do not attempt authorization of a payment.
+    public const AUTHENTICATION_REQUIRED = 'AUTHENTICATION_REQUIRED'; // Payer authentication is required for this payment, but was not provided.
+    public const AUTHENTICATION_SUCCESSFUL = 'AUTHENTICATION_SUCCESSFUL'; // The payer was successfully authenticated.
+    public const AUTHENTICATION_UNAVAILABLE = 'AUTHENTICATION_UNAVAILABLE'; // The payer was not able to be authenticated due to a technical or other issue.
+
     /**
      * TODO: Default this to false and implement the ability to override it in a request.
      *
@@ -28,7 +40,7 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
         // NOTE: This just confirms that the _response_ was successful, not a transaction.
         //       There is a bit of overlap and ambiguity with the Omnipay package, but this
         //       point has been clarified and documentation has been updated to confirm.
-        return $this->getResultCode() === 'SUCCESS';
+        return $this->getResultCode() === 'SUCCESS' || $this->getResultCode() === 'PENDING';
     }
 
     /**
@@ -92,10 +104,19 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
     /**
      * @inheritDoc
      */
+    public function getMessage()
+    {
+        // TODO: Consider success messages.
+        return $this->isSuccessful() ? null : $this->getErrorMessage();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getRedirectUrl()
     {
         // Only use URL redirection for 3DS2 as 3DS1 only supports the iframe method.
-        $url = '/';
+        $url = null;
         if ($this->is3ds2()) {
             $authenticationData = $this->getData()['authentication']['redirect']['customizedHtml']['3ds2'] ?? [];
             $url = $authenticationData['acsUrl'] ?? $authenticationData['methodUrl'] ?? null;
@@ -185,7 +206,7 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
      */
     public function getAuthenticationStatus()
     {
-        return $this->getData()['order']['authenticationStatus'] ?? null;
+        return $this->getData()['transaction']['authenticationStatus'] ?? null;
     }
 
     /**
@@ -194,6 +215,40 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
     public function getAuthenticationVersion()
     {
         return $this->getData()['authentication']['version'] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAuthenticationAvailable(): bool
+    {
+        // TODO: Confirm all statuses that we need to check for.
+        $authenticationAvailableStatuses = [
+            self::AUTHENTICATION_AVAILABLE,
+        ];
+        return in_array($this->getAuthenticationStatus(), $authenticationAvailableStatuses);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAuthenticationNotAvailable(): bool
+    {
+        // TODO: Confirm all statuses that we need to check for.
+        $authenticationNotAvailableStatuses = [
+            self::AUTHENTICATION_EXEMPT,
+            self::AUTHENTICATION_NOT_SUPPORTED,
+            self::AUTHENTICATION_UNAVAILABLE,
+        ];
+        return in_array($this->getAuthenticationStatus(), $authenticationNotAvailableStatuses);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function shouldProceed()
+    {
+        return $this->getGatewayRecommendation() == 'PROCEED';
     }
 
     /**

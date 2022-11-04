@@ -87,4 +87,15 @@ class HostedSessionGateway extends AbstractGateway
     {
         return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\AuthenticateRepostRequest::class, $options);
     }
+
+    /**
+     * Retrieve a transaction.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function retrieveTransaction(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\RetrieveTransactionRequest::class, $options);
+    }
 }
