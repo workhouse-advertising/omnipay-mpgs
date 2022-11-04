@@ -25,7 +25,7 @@ class InitiateAuthenticationRequest extends AbstractRequest
             'sessionId',
         );
 
-        return [
+        $data = [
             'apiOperation' => 'INITIATE_AUTHENTICATION',
             'session' => [
                 'id' => $this->getSessionId(),
@@ -36,22 +36,49 @@ class InitiateAuthenticationRequest extends AbstractRequest
                 //       information. Maybe this is intentional for some reason?
                 // 'acceptVersions' => '3DS1',
                 // 'acceptVersions' => '3DS2',
-                'acceptVersions' => '3DS1,3DS2',
+                // 'acceptVersions' => '3DS1,3DS2',
+                'acceptVersions' => $this->getAuthenticationAcceptVersions(),
                 // NOTE: The `authentication.channel` field appears to be compulsory if you actually want
                 //       anything to be able to be authenticated. The documentation forgets to include this field
                 //       in the list of required fields, possibly because it's a sub-field.
-                'channel' => 'PAYER_BROWSER',
+                'channel' => $this->getAuthenticationChannel(),
+                // 'channel' => 'PAYER_BROWSER',
                 // 'purpose' => 'PAYMENT_TRANSACTION',
             ],
-            // TODO: Add support for other fund sources.
-            'sourceOfFunds' => [
-                'type' => 'CARD',
-            ],
+            // // TODO: Add support for other fund sources.
+            // 'sourceOfFunds' => [
+            //     'type' => 'CARD',
+            // ],
+            // TODO: Add support for additional order fields.
             'order' => [
                 // 'amount' => $this->getAmount(),
                 'currency' => $this->getCurrency(),
             ],
         ];
+
+        // Add the `sourceOfFunds` parameter if one is set.
+        if ($this->getSourceOfFunds()) {
+            $data['sourceOfFunds'] = $this->getSourceOfFunds();
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSourceOfFunds()
+    {
+        return $this->getParameter('sourceOfFunds');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setSourceOfFunds($value)
+    {
+        return $this->setParameter('sourceOfFunds', $value);
     }
 
     /**

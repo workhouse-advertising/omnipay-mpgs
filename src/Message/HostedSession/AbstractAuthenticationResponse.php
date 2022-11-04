@@ -28,7 +28,7 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
         // NOTE: This just confirms that the _response_ was successful, not a transaction.
         //       There is a bit of overlap and ambiguity with the Omnipay package, but this
         //       point has been clarified and documentation has been updated to confirm.
-        return ($this->getData()['result'] ?? null) === 'SUCCESS';
+        return $this->getResultCode() === 'SUCCESS';
     }
 
     /**
@@ -68,6 +68,12 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
     {
         if ($this->is3ds2()) {
             parent::validateRedirect();
+        }
+
+        if (!$this->isSuccessful()) {
+            $resultCode = $this->getResultCode() ?? 'GATEWAY_FAILURE';
+            $message = $this->getErrorMessage() ?? 'An unexpected error occurred with this payment gateway. Please, try again or choose a different payment method.';
+            throw new RuntimeException("Result code '{$resultCode}': {$message}");
         }
 
         if (!$this->is3ds1() && !$this->is3ds2()) {
@@ -140,6 +146,22 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
         }
 
         return $methodPostData ? [$parameterName => $methodPostData] : [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getResultCode()
+    {
+        return $this->getData()['result'] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getErrorMessage()
+    {
+        return $this->getData()['error']['explanation'] ?? null;
     }
 
     /**

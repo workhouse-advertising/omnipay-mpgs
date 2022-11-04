@@ -92,6 +92,40 @@ trait GatewayParameters
     /**
      * @return mixed
      */
+    public function getAuthenticationAcceptVersions()
+    {
+        return $this->getParameter('authenticationAcceptVersions');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAuthenticationAcceptVersions($value)
+    {
+        return $this->setParameter('authenticationAcceptVersions', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthenticationChannel()
+    {
+        return $this->getParameter('authenticationChannel');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAuthenticationChannel($value)
+    {
+        return $this->setParameter('authenticationChannel', $value);
+    }
+
+    /**
+     * @return mixed
+     */
     public function getApiRegion()
     {
         return $this->getParameter('apiRegion');
@@ -138,5 +172,39 @@ trait GatewayParameters
     public function setOrderId($value)
     {
         return $this->setParameter('orderId', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowser()
+    {
+        return $this->getParameter('browser');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowser($value)
+    {
+        return $this->setParameter('browser', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowserDetails()
+    {
+        return $this->getParameter('browserDetails');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowserDetails($value)
+    {
+        return $this->setParameter('browserDetails', $value);
     }
 }
