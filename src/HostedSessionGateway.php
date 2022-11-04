@@ -76,4 +76,15 @@ class HostedSessionGateway extends AbstractGateway
     {
         return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\AuthenticateRequest::class, $options);
     }
+
+    /**
+     * Replay an authentication callback POST request to work around the lack of cookies due to SameSite policy issues.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function authenticateRepost(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\AuthenticateRepostRequest::class, $options);
+    }
 }

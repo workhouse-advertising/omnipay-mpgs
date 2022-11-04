@@ -28,21 +28,21 @@ abstract class AbstractRequest extends BaseAbstractRequest
      *
      * @return string
      */
-    abstract protected function getEndpoint(): string;
+    abstract public function getEndpoint(): string;
 
     /**
      * Get the method for the endpoint.
      *
      * @return string
      */
-    abstract protected function getMethod(): string;
+    abstract public function getMethod(): string;
 
     /**
      * Get the FQCN to use for a response.
      *
      * @return string
      */
-    abstract protected function getResponseClass(): string;
+    abstract public function getResponseClass(): string;
 
     /**
      * Create a response from the response data.
@@ -78,7 +78,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
             throw new InvalidRequestException("Invalid request to the MPGS Hosted Session API. Received status code '{$httpResponse->getStatusCode()}'.");
         }
 
-        // return new PurchaseResponse($this, $responseData);
         return $this->makeResponse($responseData);
     }
 }

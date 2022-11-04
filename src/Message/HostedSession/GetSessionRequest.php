@@ -26,7 +26,7 @@ class GetSessionRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getEndpoint(): string
+    public function getEndpoint(): string
     {
         // TODO: Add an option to append `?debug=true` to the URL.
         return sprintf('%s/api/rest/version/%s/merchant/%s/session/%s', $this->getBaseEndpoint(), $this->getApiVersion(), $this->getMerchantId(), $this->getSessionId());
@@ -35,7 +35,7 @@ class GetSessionRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getMethod(): string
+    public function getMethod(): string
     {
         return 'GET';
     }
@@ -43,7 +43,7 @@ class GetSessionRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getResponseClass(): string
+    public function getResponseClass(): string
     {
         return \Omnipay\Mpgs\Message\HostedSession\GetSessionResponse::class;
     }

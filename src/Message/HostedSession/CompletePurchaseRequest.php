@@ -42,7 +42,7 @@ class CompletePurchaseRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getEndpoint(): string
+    public function getEndpoint(): string
     {
         // TODO: Add an option to append `?debug=true` to the URL.
         return sprintf('%s/api/rest/version/%s/merchant/%s/order/%s/transaction/%s', $this->getBaseEndpoint(), $this->getApiVersion(), $this->getMerchantId(), $this->getOrderId(), $this->getTransactionId());
@@ -51,7 +51,7 @@ class CompletePurchaseRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getMethod(): string
+    public function getMethod(): string
     {
         return 'PUT';
     }
@@ -59,7 +59,7 @@ class CompletePurchaseRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    protected function getResponseClass(): string
+    public function getResponseClass(): string
     {
         return \Omnipay\Mpgs\Message\HostedSession\PurchaseResponse::class;
     }
