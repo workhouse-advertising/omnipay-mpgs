@@ -23,7 +23,28 @@ class AuthenticateRepostRequest extends AbstractRequest
         //     'amount',
         // );
 
-        return $this->getPostData();
+        $postData = (array) $this->getPostData();
+
+        // TODO: Check if we need to also allow any other fields.
+        $allowedFields = [
+            'order_id',
+            'transaction_id',
+            'response_gatewayRecommendation',
+            'encryptedData_ciphertext',
+            'encryptedData_nonce',
+            'encryptedData_tag',
+            'result',
+            // 'sessionId',
+        ];
+
+        $data = [];
+        foreach ($allowedFields as $field) {
+            if (array_key_exists($field, $postData)) {
+                $data[$field] = $postData[$field];
+            }
+        }
+
+        return $data;
     }
 
     /**
