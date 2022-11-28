@@ -246,6 +246,18 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
     /**
      * @inheritDoc
      */
+    public function isAuthenticationSuccessful(): bool
+    {
+        // TODO: Confirm all statuses that we need to check for.
+        $authenticationAvailableStatuses = [
+            self::AUTHENTICATION_SUCCESSFUL,
+        ];
+        return in_array($this->getAuthenticationStatus(), $authenticationAvailableStatuses);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function shouldProceed()
     {
         return $this->getGatewayRecommendation() == 'PROCEED';
