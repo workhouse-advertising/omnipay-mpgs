@@ -79,6 +79,11 @@ abstract class AbstractAuthenticationResponse extends AbstractResponse implement
     protected function validateRedirect()
     {
         if ($this->is3ds2()) {
+            // A nicer error message than the default of "The given redirectUrl cannot be empty.".
+            if (empty($this->getRedirectUrl())) {
+                throw new RuntimeException('There was an error with the 3DS2 response where no redirect URL was supplied. Please, try again or choose a different payment method.');
+            }
+
             parent::validateRedirect();
         }
 
