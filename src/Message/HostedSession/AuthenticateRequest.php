@@ -30,14 +30,13 @@ class AuthenticateRequest extends AbstractRequest
             'session' => [
                 'id' => $this->getSessionId(),
             ],
-            // TODO: Add support for these authentication parameters.
             'authentication' => [
                 'redirectResponseUrl' => $this->getReturnUrl(),
             ],
-            // // TODO: Add support for other fund sources.
-            // 'sourceOfFunds' => [
-            //     'type' => 'CARD',
-            // ],
+            'device' => [
+                'browser' => substr($this->getBrowser() ?? '', 0, 255),
+                'browserDetails' => (array) $this->getBrowserDetails(),
+            ],
             'order' => [
                 'amount' => $this->getAmount(),
                 'currency' => $this->getCurrency(),
@@ -46,9 +45,43 @@ class AuthenticateRequest extends AbstractRequest
     }
 
     /**
+     * @return mixed
+     */
+    public function getBrowser()
+    {
+        return $this->getParameter('browser');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowser($value)
+    {
+        return $this->setParameter('browser', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrowserDetails()
+    {
+        return $this->getParameter('browserDetails');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setBrowserDetails($value)
+    {
+        return $this->setParameter('browserDetails', $value);
+    }
+
+    /**
      * @inheritDoc
      */
-    protected function getEndpoint()
+    public function getEndpoint(): string
     {
         // TODO: Add an option to append `?debug=true` to the URL.
         return sprintf('%s/api/rest/version/%s/merchant/%s/order/%s/transaction/%s', $this->getBaseEndpoint(), $this->getApiVersion(), $this->getMerchantId(), $this->getOrderId(), $this->getTransactionId());
@@ -57,23 +90,16 @@ class AuthenticateRequest extends AbstractRequest
     /**
      * @inheritDoc
      */
-    public function sendData($data)
+    public function getMethod(): string
     {
-        $headers = [
-            'Authorization' => "Basic {$this->getAuthorisationBasicPassword()}",
-            'Content-Type' => 'application/json',
-        ];
+        return 'PUT';
+    }
 
-        $httpResponse = $this->httpClient->request('PUT', $this->getEndpoint(), $headers, json_encode($data));
-        $responseData = json_decode($httpResponse->getBody(), true);
-
-        // NOTE: Any 2xx response is to be considered to be successful, although this is not explicitly indicated in the documentation
-        //       at `https://test-gateway.mastercard.com/api/documentation/apiDocumentation/rest-json/version/latest/operation/Transaction%3a%20%20Pay.html`
-        // NOTE: Including 400s as MPGS uses those for some errors even though it's _technically_ a valid response.
-        if (($httpResponse->getStatusCode() < 200 || $httpResponse->getStatusCode() > 299) && $httpResponse->getStatusCode() != 400) {
-            throw new InvalidRequestException("Invalid request to the MPGS Hosted Session API. Received status code '{$httpResponse->getStatusCode()}'.");
-        }
-
-        return new AuthenticateResponse($this, $responseData);
+    /**
+     * @inheritDoc
+     */
+    public function getResponseClass(): string
+    {
+        return \Omnipay\Mpgs\Message\HostedSession\AuthenticateResponse::class;
     }
 }

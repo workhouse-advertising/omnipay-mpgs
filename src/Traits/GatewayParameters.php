@@ -92,6 +92,40 @@ trait GatewayParameters
     /**
      * @return mixed
      */
+    public function getAuthenticationAcceptVersions()
+    {
+        return $this->getParameter('authenticationAcceptVersions');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAuthenticationAcceptVersions($value)
+    {
+        return $this->setParameter('authenticationAcceptVersions', $value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthenticationChannel()
+    {
+        return $this->getParameter('authenticationChannel');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAuthenticationChannel($value)
+    {
+        return $this->setParameter('authenticationChannel', $value);
+    }
+
+    /**
+     * @return mixed
+     */
     public function getApiRegion()
     {
         return $this->getParameter('apiRegion');

@@ -3,20 +3,11 @@
 namespace Omnipay\Mpgs\Message\HostedSession;
 
 /**
- * Initiate card holder authentication (3DS, etc...).
+ * Perform card holder authentication (3DS, etc...).
  */
 
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RedirectResponseInterface;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Omnipay\Mpgs\Message\HostedSession\AbstractAuthenticationResponse;
 
-class AuthenticateResponse extends AbstractResponse
+class AuthenticateResponse extends AbstractAuthenticationResponse
 {
-    /**
-     * @inheritDoc
-     */
-    public function isSuccessful()
-    {
-        return false;
-    }
 }

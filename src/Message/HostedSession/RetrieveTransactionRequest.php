@@ -2,16 +2,14 @@
 
 namespace Omnipay\Mpgs\Message\HostedSession;
 
-use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Mpgs\Message\AbstractRequest;
-use Omnipay\Mpgs\Message\HostedSession\PurchaseResponse;
 
 /**
- * Authorize Request
+ * RetrieveTransactionRequest Request
  *
  * @method Response send()
  */
-class PurchaseRequest extends AbstractRequest
+class RetrieveTransactionRequest extends AbstractRequest
 {
     /**
      * @inheritDoc
@@ -19,26 +17,11 @@ class PurchaseRequest extends AbstractRequest
     public function getData()
     {
         $this->validate(
-            'amount',
-            'currency',
             'orderId',
-            'sessionId',
+            'transactionId',
         );
 
-        return [
-            'apiOperation' => 'PAY',
-            'session' => [
-                'id' => $this->getSessionId(),
-            ],
-            // TODO: Add support for other fund sources.
-            'sourceOfFunds' => [
-                'type' => 'CARD',
-            ],
-            'order' => [
-                'amount' => $this->getAmount(),
-                'currency' => $this->getCurrency(),
-            ],
-        ];
+        return [];
     }
 
     /**
@@ -55,7 +38,7 @@ class PurchaseRequest extends AbstractRequest
      */
     public function getMethod(): string
     {
-        return 'PUT';
+        return 'GET';
     }
 
     /**
@@ -63,6 +46,6 @@ class PurchaseRequest extends AbstractRequest
      */
     public function getResponseClass(): string
     {
-        return \Omnipay\Mpgs\Message\HostedSession\PurchaseResponse::class;
+        return \Omnipay\Mpgs\Message\HostedSession\RetrieveTransactionResponse::class;
     }
 }

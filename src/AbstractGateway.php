@@ -14,15 +14,20 @@ abstract class AbstractGateway extends AbstractGatewayBase
      */
     public function getDefaultParameters()
     {
-        return array(
+        return [
             // TODO: Consider adding verification for available API regions.
             'apiRegion' => 'ap',
             'apiVersion' => 68,
             'merchantId' => '',
             'password' => '',
             'testMode' => false,
+            // 3DS authentication
+            // NOTE: `3DS1` is disabled by default as it has been deprecated worldwide.
+            // 'authenticationAcceptVersions' => '3DS1,3DS2',
+            'authenticationAcceptVersions' => '3DS2',
+            'authenticationChannel' => 'PAYER_BROWSER',
             // TODO: Add support for the 'debug' parameter.
             'debug' => false,
-        );
+        ];
     }
 }

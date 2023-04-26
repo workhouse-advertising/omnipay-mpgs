@@ -17,13 +17,50 @@ class CompletePurchaseRequest extends AbstractRequest
     public function getData()
     {
         $this->validate(
+            'amount',
+            'currency',
+            'orderId',
             'sessionId',
         );
 
         return [
+            'apiOperation' => 'PAY',
             'session' => [
                 'id' => $this->getSessionId(),
             ],
+            // TODO: Add support for other fund sources.
+            'sourceOfFunds' => [
+                'type' => 'CARD',
+            ],
+            'order' => [
+                'amount' => $this->getAmount(),
+                'currency' => $this->getCurrency(),
+            ],
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEndpoint(): string
+    {
+        // TODO: Add an option to append `?debug=true` to the URL.
+        return sprintf('%s/api/rest/version/%s/merchant/%s/order/%s/transaction/%s', $this->getBaseEndpoint(), $this->getApiVersion(), $this->getMerchantId(), $this->getOrderId(), $this->getTransactionId());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMethod(): string
+    {
+        return 'PUT';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getResponseClass(): string
+    {
+        return \Omnipay\Mpgs\Message\HostedSession\PurchaseResponse::class;
     }
 }

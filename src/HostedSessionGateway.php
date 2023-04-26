@@ -23,6 +23,17 @@ class HostedSessionGateway extends AbstractGateway
     }
 
     /**
+     * Fetch a session.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function getSession(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\GetSessionRequest::class, $options);
+    }
+
+    /**
      * Authorize and immediately capture an amount on the customers card
      *
      * @param array $options
@@ -64,5 +75,27 @@ class HostedSessionGateway extends AbstractGateway
     public function authenticate(array $options = [])
     {
         return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\AuthenticateRequest::class, $options);
+    }
+
+    /**
+     * Replay an authentication callback POST request to work around the lack of cookies due to SameSite policy issues.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function authenticateRepost(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\AuthenticateRepostRequest::class, $options);
+    }
+
+    /**
+     * Retrieve a transaction.
+     *
+     * @param array $options
+     * @return \Omnipay\Common\Message\ResponseInterface
+     */
+    public function retrieveTransaction(array $options = [])
+    {
+        return $this->createRequest(\Omnipay\Mpgs\Message\HostedSession\RetrieveTransactionRequest::class, $options);
     }
 }
