@@ -173,4 +173,21 @@ trait GatewayParameters
     {
         return $this->setParameter('orderId', $value);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthentication()
+    {
+        return $this->getParameter('authentication');
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setAuthentication($value)
+    {
+        return $this->setParameter('authentication', $value);
+    }
 }
