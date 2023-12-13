@@ -23,7 +23,7 @@ class CompletePurchaseRequest extends AbstractRequest
             'sessionId',
         );
 
-        return [
+        $data = [
             'apiOperation' => 'PAY',
             'session' => [
                 'id' => $this->getSessionId(),
@@ -37,6 +37,12 @@ class CompletePurchaseRequest extends AbstractRequest
                 'currency' => $this->getCurrency(),
             ],
         ];
+
+        if ($this->getAuthentication()) {
+            $data['authentication'] = $this->getAuthentication();
+        }
+
+        return $data;
     }
 
     /**
